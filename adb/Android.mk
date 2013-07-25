@@ -75,7 +75,16 @@ else
   LOCAL_SRC_FILES += fdevent.c
 endif
 
-LOCAL_CFLAGS += -O2 -g -DADB_HOST=1  -Wall -Wno-unused-parameter
+LOCAL_CFLAGS += -g -DADB_HOST=1  -Wall -Wno-unused-parameter
+# adb can't be built without optimizations, so we enforce -O2 if no
+# other optimization flag is set - but we don't override what the global
+# flags are saying if something else is given (-Os or -O3 are useful)
+ifeq ($(findstring -O, $(HOST_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
+ifneq ($(findstring -O0, $(HOST_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
 LOCAL_CFLAGS += -D_XOPEN_SOURCE -D_GNU_SOURCE
 LOCAL_MODULE := adb
 LOCAL_MODULE_TAGS := debug
@@ -119,7 +128,16 @@ LOCAL_SRC_FILES := \
 	log_service.c \
 	utils.c
 
-LOCAL_CFLAGS := -O2 -g -DADB_HOST=0 -Wall -Wno-unused-parameter
+LOCAL_CFLAGS := -g -DADB_HOST=0 -Wall -Wno-unused-parameter
+# adb can't be built without optimizations, so we enforce -O2 if no
+# other optimization flag is set - but we don't override what the global
+# flags are saying if something else is given (-Os or -O3 are useful)
+ifeq ($(findstring -O, $(TARGET_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
+ifneq ($(findstring -O0, $(TARGET_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
 LOCAL_CFLAGS += -D_XOPEN_SOURCE -D_GNU_SOURCE
 
 ifneq (,$(filter userdebug eng,$(TARGET_BUILD_VARIANT)))
@@ -168,7 +186,6 @@ LOCAL_SRC_FILES := \
 	fdevent.c
 
 LOCAL_CFLAGS := \
-	-O2 \
 	-g \
 	-DADB_HOST=1 \
 	-DADB_HOST_ON_TARGET=1 \
@@ -178,6 +195,16 @@ LOCAL_CFLAGS := \
 	-D_GNU_SOURCE
 
 LOCAL_C_INCLUDES += external/openssl/include
+
+# adb can't be built without optimizations, so we enforce -O2 if no
+# other optimization flag is set - but we don't override what the global
+# flags are saying if something else is given (-Os or -O3 are useful)
+ifeq ($(findstring -O, $(TARGET_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
+ifneq ($(findstring -O0, $(TARGET_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
 
 LOCAL_MODULE := adb
 
