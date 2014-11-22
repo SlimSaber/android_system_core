@@ -12,7 +12,7 @@ LOCAL_SRC_FILES := $(commonSources)
 LOCAL_MODULE := libdiskconfig
 LOCAL_MODULE_TAGS := optional
 LOCAL_SYSTEM_SHARED_LIBRARIES := libcutils liblog libc
-LOCAL_CFLAGS := -Werror
+LOCAL_CFLAGS := -Werror -fno-strict-aliasing
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)

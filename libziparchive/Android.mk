@@ -30,7 +30,7 @@ LOCAL_SHARED_LIBRARIES := libutils
 LOCAL_MODULE:= libziparchive
 
 LOCAL_C_INCLUDES += ${includes}
-LOCAL_CFLAGS := -Werror
+LOCAL_CFLAGS := -Werror -fno-strict-aliasing
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -41,7 +41,7 @@ LOCAL_C_INCLUDES += ${includes}
 
 LOCAL_STATIC_LIBRARIES := libz libutils
 LOCAL_MODULE:= libziparchive-host
-LOCAL_CFLAGS := -Werror
+LOCAL_CFLAGS := -Werror -fno-strict-aliasing
 ifneq ($(strip $(USE_MINGW)),)
 	LOCAL_CFLAGS += -mno-ms-bitfields
 endif
@@ -54,7 +54,7 @@ LOCAL_CPP_EXTENSION := .cc
 LOCAL_CFLAGS += \
     -DGTEST_OS_LINUX_ANDROID \
     -DGTEST_HAS_STD_STRING \
-    -Werror
+    -Werror -fno-strict-aliasing
 LOCAL_SRC_FILES := zip_archive_test.cc
 LOCAL_SHARED_LIBRARIES := liblog
 LOCAL_STATIC_LIBRARIES := libziparchive libz libgtest libgtest_main libutils
@@ -66,7 +66,7 @@ LOCAL_CPP_EXTENSION := .cc
 LOCAL_CFLAGS += \
     -DGTEST_OS_LINUX \
     -DGTEST_HAS_STD_STRING \
-    -Werror
+    -Werror -fno-strict-aliasing
 LOCAL_SRC_FILES := zip_archive_test.cc
 LOCAL_STATIC_LIBRARIES := libziparchive-host \
 	libz \
