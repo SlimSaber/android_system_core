@@ -241,7 +241,7 @@ void LogBuffer::prune(log_id_t id, unsigned long pruneRows, uid_t caller_uid) {
     LastLogTimes::iterator t = mTimes.begin();
     while(t != mTimes.end()) {
         LogTimeEntry *entry = (*t);
-        if (entry->owned_Locked()
+        if (entry->owned_Locked() && entry->isWatching(id)
                 && (!oldest || (oldest->mStart > entry->mStart))) {
             oldest = entry;
         }
@@ -358,7 +358,7 @@ void LogBuffer::prune(log_id_t id, unsigned long pruneRows, uid_t caller_uid) {
                         // kick a misbehaving log reader client off the island
                         oldest->release_Locked();
                     } else {
-                        oldest->triggerSkip_Locked(pruneRows);
+                        oldest->triggerSkip_Locked(id, pruneRows);
                     }
                 }
                 break;
@@ -389,7 +389,7 @@ void LogBuffer::prune(log_id_t id, unsigned long pruneRows, uid_t caller_uid) {
                         // kick a misbehaving log reader client off the island
                         oldest->release_Locked();
                     } else {
-                        oldest->triggerSkip_Locked(pruneRows);
+                        oldest->triggerSkip_Locked(id, pruneRows);
                     }
                     break;
                 }
