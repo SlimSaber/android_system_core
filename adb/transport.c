@@ -1167,7 +1167,9 @@ int readx(int fd, void *ptr, size_t len)
 
 #if ADB_TRACE
     D("readx: fd=%d wanted=%zu got=%zu\n", fd, len0, len0 - len);
-    dump_hex( ptr, len0 );
+    if (ADB_TRACING) {
+        dump_hex( ptr, len0 );
+    }
 #endif
     return 0;
 }
@@ -1179,7 +1181,9 @@ int writex(int fd, const void *ptr, size_t len)
 
 #if ADB_TRACE
     D("writex: fd=%d len=%d: ", fd, (int)len);
-    dump_hex( ptr, len );
+    if (ADB_TRACING) {
+        dump_hex( ptr, len );
+    }
 #endif
     while(len > 0) {
         r = adb_write(fd, p, len);
