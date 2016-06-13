@@ -780,6 +780,16 @@ on property:persist.logd.logpersistd=logcatd
     exec - logd log -- /system/bin/logcat -L -b all -v threadtime -v usec -v printable -D -f /data/misc/logd/logcat -r 1024 -n 256
     start logcatd
 
+on property:persist.logd.logpersistd=clear
+    stop logcatd
+    # logd for clear of only our files in /data/misc/logd
+    exec - logd log -- /system/bin/logcat -c -f /data/misc/logd/logcat -n ${persist.logd.logpersistd.size:-256}
+    setprop persist.logd.logpersistd ""
+
+on property:persist.logd.logpersistd=stop
+    stop logcatd
+    setprop persist.logd.logpersistd ""
+
 service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D -f /data/misc/logd/logcat -r 1024 -n 256
     class late_start
     disabled
